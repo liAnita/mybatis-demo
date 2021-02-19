@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace = "需要指定的mapper接口"-->
+<mapper namespace="com.dao.BlogMapper">
+    <insert id="addBlog" parameterType="Blog">
+        insert into blog (id, title, author, create_time, views)
+        VALUES (#{id}, #{title}, #{author}, #{createTime}, #{views})
+    </insert>
+
+    <select id="selectByIf" parameterType="map" resultType="blog">
+        select * from blog
+        <where>
+            <if test=" title != null">
+                title like #{title}
+            </if>
+            <if test="author != null">
+                and author= #{author}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectBlogInfo" parameterType="map" resultType="blog">
+        select * from blog
+        <where>
+            <choose>
+                <when test="title !=null">
+                    title like #{title}
+                </when>
+                <when test="author!=null">
+                    and author = #{author}
+                </when>
+                <otherwise>
+                    views = #{view}
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <!-- where 元素等价的自定义 trim 元素 -->
+    <!--    <select id="selectBlogInfo" parameterType="map" resultType="blog">-->
+    <!--        select * from blog-->
+    <!--        <trim prefix="where" prefixOverrides="and | or">-->
+    <!--            <choose>-->
+    <!--                <when test="title !=null">-->
+    <!--                    title like #{title}-->
+    <!--                </when>-->
+    <!--                <when test="author!=null">-->
+    <!--                    and author = #{author}-->
+    <!--                </when>-->
+    <!--                <otherwise>-->
+    <!--                    views = #{view}-->
+    <!--                </otherwise>-->
+    <!--            </choose>-->
+    <!--        </trim>-->
+    <!--    </select>-->
+    <update id="updateBlogInfo" parameterType="map">
+        update blog
+        <set>
+            <if test="author != null">
+                author = #{author},
+            </if>
+            <if test="title !=null">
+                title = #{title}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--  &lt;!&ndash; set 元素等价的自定义 trim 元素 &ndash;&gt;-->
+    <!--    <update id="updateBlogInfo" parameterType="map">-->
+    <!--        update blog-->
+    <!--        <trim prefix="set" suffixOverrides=",">-->
+    <!--            <if test="author != null">-->
+    <!--                author = #{author},-->
+    <!--            </if>-->
+    <!--            <if test="title !=null">-->
+    <!--                title = #{title}-->
+    <!--            </if>-->
+    <!--        </trim>-->
+    <!--        where id = #{id}-->
+    <!--    </update>-->
+    <sql id="sql-ids">
+        <foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </sql>
+    <select id="selectBlogForeach" parameterType="map" resultType="blog">
+        select * from blog where id in
+        <include refid="sql-ids"></include>
+    </select>
+</mapper>

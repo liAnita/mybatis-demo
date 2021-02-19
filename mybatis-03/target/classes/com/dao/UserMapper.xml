@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace = "需要指定的mapper接口"-->
+<mapper namespace="com.dao.UserMapper">
+    <!--当实体类的属性和表字段名称不一致时，最简单的方式是sql取别名（但是麻烦）我们一般会使用resultMap -->
+    <!--    <select id="getAllUSer" resultType="User">-->
+    <!--        select id,name,pwd as password from mybatis.user-->
+    <!--    </select>-->
+    <resultMap id="userResultMap" type="User">
+        <result column="pwd" property="password"></result>
+    </resultMap>
+    <select id="getAllUser" resultMap="userResultMap">
+        select *  from user
+    </select>
+    <insert id="addUser" parameterType="User">
+        insert into mybatis.user (name,pwd) values (#{name},#{pwd})
+    </insert>
+
+    <select id="selectUserById" parameterType="int" resultType="User">
+        select * from mybatis.user where id = #{id}
+    </select>
+
+    <update id="updateUser" parameterType="String">
+        update mybatis.user set pwd = #{userPwd} where name = #{userName}
+    </update>
+
+    <delete id="deleteUser" parameterType="string">
+        delete from mybatis.user where name = #{name}
+    </delete>
+
+    <select id="selectByLike" parameterType="string" resultType="user">
+        select * from user where name like "%"#{value}"%"
+    </select>
+
+    <select id="selectByLimit" parameterType="map" resultMap="userResultMap">
+        select * from user limit #{page},#{pageSize}
+    </select>
+
+    <select id="selectRowBound" resultMap="userResultMap">
+        select * from user
+    </select>
+</mapper>
+
+
