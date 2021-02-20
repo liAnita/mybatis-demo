@@ -83,7 +83,7 @@ public class BlogTest {
         map.put("ids", list);
         List<Blog> blogs = mapper.selectBlogForeach(map);
         for (Blog blog : blogs) {
-            System.out.println(blog);
+            System.out.println(blogs);
         }
         sqlSession.close();
     }
