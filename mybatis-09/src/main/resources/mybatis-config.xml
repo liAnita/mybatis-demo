@@ -8,6 +8,7 @@
     <settings>
         <setting name="logImpl" value="LOG4J"/>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="cacheEnabled" value="true"/>
     </settings>
     <typeAliases>
         <package name="com.pojo"/>
@@ -24,6 +25,6 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="com/dao/BlogMapper.xml"></mapper>
+        <mapper resource="com/dao/UserMapper.xml"></mapper>
     </mappers>
 </configuration>

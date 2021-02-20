@@ -87,7 +87,7 @@
         </foreach>
     </sql>
     <select id="selectBlogForeach" parameterType="map" resultType="blog">
-        select * from blog where id in
+        select id,title,author,DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as createTime,views from blog where id in
         <include refid="sql-ids"></include>
     </select>
 </mapper>
